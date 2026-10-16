@@ -92,4 +92,30 @@ public class UserCreationTest extends BaseApiTest {
                 .body(JsonKeys.SUCCESS, is(false))
                 .body(JsonKeys.MESSAGE, equalTo(TestConstants.Error.REQUIRED_FIELDS));
     }
+
+    @Test
+    @DisplayName("Создание пользователя без обязательного поля (password)")
+    @Description("Проверка ошибки при создании пользователя без поля password")
+    public void createUserWithoutPasswordTest() {
+        user.setPassword(null);
+        Response response = userSteps.createUser(user);
+
+        response.then()
+                .statusCode(HttpStatus.FORBIDDEN)
+                .body(JsonKeys.SUCCESS, is(false))
+                .body(JsonKeys.MESSAGE, equalTo(TestConstants.Error.REQUIRED_FIELDS));
+    }
+
+    @Test
+    @DisplayName("Создание пользователя без обязательного поля (name)")
+    @Description("Проверка ошибки при создании пользователя без поля name")
+    public void createUserWithoutNameTest() {
+        user.setName(null);
+        Response response = userSteps.createUser(user);
+
+        response.then()
+                .statusCode(HttpStatus.FORBIDDEN)
+                .body(JsonKeys.SUCCESS, is(false))
+                .body(JsonKeys.MESSAGE, equalTo(TestConstants.Error.REQUIRED_FIELDS));
+    }
 }
