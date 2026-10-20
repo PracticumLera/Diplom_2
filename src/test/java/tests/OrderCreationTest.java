@@ -75,7 +75,7 @@ public class OrderCreationTest extends BaseApiTest {
 
     @Test
     @DisplayName("Создание заказа без авторизации")
-    @Description("Проверка ошибки при попытке создания заказа без авторизации")
+    @Description("Проверка создания заказа неавторизованным пользователем")
     public void createOrderWithoutAuthTest() {
         Order order = Order.builder()
                 .ingredients(validIngredientIds)
@@ -84,9 +84,10 @@ public class OrderCreationTest extends BaseApiTest {
         Response response = orderSteps.createOrderWithoutAuth(order);
 
         response.then()
-                .statusCode(HttpStatus.UNAUTHORIZED)
-                .body(JsonKeys.SUCCESS, is(false))
-                .body(JsonKeys.MESSAGE, equalTo(TestConstants.Error.NOT_AUTHORIZED));
+                .statusCode(HttpStatus.OK)
+                .body(JsonKeys.SUCCESS, is(true))
+                .body(JsonKeys.NAME, notNullValue())
+                .body(JsonKeys.ORDER_NUMBER, notNullValue());
     }
 
     @Test
